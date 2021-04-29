@@ -45,39 +45,42 @@ app.get("/weather", (req, res) => {
     });
   }
 
-  if (req.query.address !== "boston") {
-    return res.send({
-      error: "Please provide an valid address",
-    });
-  }
-
-  return res.send({
-    forecast: "Rain And bizzy",
-    location: "Bostanlı Sahili, Bostanlı, Izmir, Izmir, Turkey",
-    address: req.query.address,
-  });
-
-  // geocode(req.query.address, (error, { latitude, longitude, location }) => {
-  //   if (error) {
-  //     return res.send({
-  //       error,
-  //     });
-  //   }
-
-  //   forecast(latitude, longitude, (error, forecastData) => {
-  //     if (error) {
-  //       return res.send({
-  //         error,
-  //       });
-  //     }
-
-  //     return res.send({
-  //       forcast: forecastData,
-  //       location,
-  //       address: req.query.address,
-  //     });
+  // if (req.query.address !== "boston") {
+  //   return res.send({
+  //     error: "Please provide an valid address",
   //   });
+  // }
+
+  // return res.send({
+  //   forecast: "Rain And bizzy",
+  //   location: "Bostanlı Sahili, Bostanlı, Izmir, Izmir, Turkey",
+  //   address: req.query.address,
   // });
+
+  geocode(
+    req.query.address,
+    (error, { latitude, longitude, location } = {}) => {
+      if (error) {
+        return res.send({
+          error,
+        });
+      }
+
+      forecast(latitude, longitude, (error, forecastData) => {
+        if (error) {
+          return res.send({
+            error,
+          });
+        }
+
+        return res.send({
+          forcast: forecastData,
+          location,
+          address: req.query.address,
+        });
+      });
+    }
+  );
 });
 
 app.get("*", (req, res) => {
