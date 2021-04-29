@@ -5,7 +5,7 @@ const geocode = require("./utils/geocode");
 const forecast = require("./utils/forecast");
 
 const app = express();
-
+const port = process.env.PORT || 3000;
 // define path exress config
 const publicDirectory = path.join(__dirname, "../public");
 const viewsPath = path.join(__dirname, "../templates/views");
@@ -84,6 +84,6 @@ app.get("*", (req, res) => {
   res.render("404");
 });
 
-app.listen(3000, () => {
-  console.log("Server is running port - 3000");
+app.listen(port, () => {
+  console.log("Server is running port " + port);
 });
